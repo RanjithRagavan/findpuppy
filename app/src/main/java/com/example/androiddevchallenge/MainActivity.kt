@@ -16,8 +16,11 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -41,16 +45,42 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.model.PuppyRepo
+import com.example.androiddevchallenge.ui.PuppyDetail
 import com.example.androiddevchallenge.ui.components.StaggeredVerticalGrid
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                JetsnackApp(onBackPressedDispatcher)
+            }
+        }
+    }
+}
+
+
+@Composable
+fun JetsnackApp(backDispatcher: OnBackPressedDispatcher) {
+    val navigator: Navigator<Destination> = rememberSaveable(
+        saver = Navigator.saver(backDispatcher)
+    ) {
+        Navigator(Destination.Home, backDispatcher)
+    }
+    val actions = remember(navigator) { Actions(navigator) }
+    ProvideWindowInsets {
+        MyTheme {
+            Crossfade(navigator.current) { puppy ->
+                when (puppy) {
+                    Destination.Home -> Home(actions.selectPuppy)
+                    is Destination.PuppyDetail -> PuppyDetail(
+                        puppyId = puppy.puppyId,
+                        upPress = actions.upPress
+                    )
+                }
             }
         }
     }
@@ -58,19 +88,19 @@ class MainActivity : AppCompatActivity() {
 
 // Start building your app here!
 @Composable
-fun MyApp() {
+fun Home(onPuppySelected: (Long) -> Unit) {
     Surface(color = MaterialTheme.colors.background) {
-        val columnWidth = mutableStateOf((50..220).random())
+        val columnWidth = mutableStateOf((100..250).random())
 
         Column {
             Button(
                 onClick = {
-                    columnWidth.value = (50..220).random()
+                    columnWidth.value = (100..250).random()
                 },
                 modifier = Modifier.padding(6.dp)
             ) {
                 Text(
-                    text = "Shuffle",
+                    text = "Card Resize",
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -82,7 +112,7 @@ fun MyApp() {
                         modifier = Modifier.padding(4.dp)
                     ) {
                         PuppyRepo.puppyCollection.forEach {
-                            Card(it.name, it.imageUrl, columnWidth)
+                            Card(it.id,it.name, it.imageUrl, columnWidth,onPuppySelected)
                         }
                     }
                 }
@@ -95,7 +125,7 @@ fun MyApp() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        Home({})
     }
 }
 
@@ -103,15 +133,17 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        Home({})
     }
 }
 
 @Composable
 fun Card(
+    id:Long,
     name: String,
     imageUrl: String,
     state: MutableState<Int>,
+    onPuppySelected: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val color = remember(state.value) {
@@ -126,7 +158,8 @@ fun Card(
     ) {
         Column(
             modifier = Modifier
-                .height((50..200).random().dp)
+                .height((100..250).random().dp)
+                .clickable { onPuppySelected(id) }
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.Center
         ) {

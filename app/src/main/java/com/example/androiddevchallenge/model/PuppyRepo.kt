@@ -22,97 +22,136 @@ object PuppyRepo {
         puppy(
             id = 1,
             name = "Puppy1",
-            imageUrl = "https://source.unsplash.com/9M0tSjb-cpA"
+            imageUrl = "https://source.unsplash.com/9M0tSjb-cpA",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 2,
             name = "Puppy2",
-            imageUrl = "https://source.unsplash.com/Z1-yorzKan8"
+            imageUrl = "https://source.unsplash.com/Z1-yorzKan8",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 3,
             name = "Puppy3",
-            imageUrl = "https://source.unsplash.com/vRxRgiIZP4g"
+            imageUrl = "https://source.unsplash.com/vRxRgiIZP4g",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 4,
             name = "Puppy4",
-            imageUrl = "https://source.unsplash.com/rssC3bQr0x8"
+            imageUrl = "https://source.unsplash.com/rssC3bQr0x8",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 5,
             name = "Puppy5",
-            imageUrl = "https://source.unsplash.com/qO-PIF84Vxg"
+            imageUrl = "https://source.unsplash.com/qO-PIF84Vxg",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 6,
             name = "Puppy6",
-            imageUrl = "https://source.unsplash.com/5yAhL8ViUVg"
+            imageUrl = "https://source.unsplash.com/5yAhL8ViUVg",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 7,
             name = "Puppy7",
-            imageUrl = "https://source.unsplash.com/tVdxF-6bu7c"
+            imageUrl = "https://source.unsplash.com/tVdxF-6bu7c",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 8,
             name = "Puppy8",
-            imageUrl = "https://source.unsplash.com/tFGtvNWtnMQ"
+            imageUrl = "https://source.unsplash.com/tFGtvNWtnMQ",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 9,
             name = "Puppy9",
-            imageUrl = "https://source.unsplash.com/BrtCGcrZd10"
+            imageUrl = "https://source.unsplash.com/BrtCGcrZd10",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 10,
             name = "Puppy10",
-            imageUrl = "https://source.unsplash.com/atOlntWcO4k"
+            imageUrl = "https://source.unsplash.com/atOlntWcO4k",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 11,
             name = "Puppy11",
-            imageUrl = "https://source.unsplash.com/9LkqymZFLrE"
+            imageUrl = "https://source.unsplash.com/9LkqymZFLrE",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 12,
             name = "Puppy12",
-            imageUrl = "https://source.unsplash.com/sVtcRzphxbk"
+            imageUrl = "https://source.unsplash.com/sVtcRzphxbk",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 13,
             name = "Puppy13",
-            imageUrl = "https://source.unsplash.com/rO7GI3z2rb8"
+            imageUrl = "https://source.unsplash.com/rO7GI3z2rb8",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 14,
             name = "Puppy14",
-            imageUrl = "https://source.unsplash.com/jJmbkcj7HXg"
+            imageUrl = "https://source.unsplash.com/jJmbkcj7HXg",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 15,
             name = "Puppy15",
-            imageUrl = "https://source.unsplash.com/XFwj5LEVvMI"
+            imageUrl = "https://source.unsplash.com/XFwj5LEVvMI",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 16,
             name = "Puppy16",
-            imageUrl = "https://source.unsplash.com/QAU0vNzlEOU"
+            imageUrl = "https://source.unsplash.com/QAU0vNzlEOU",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 17,
             name = "Puppy17",
-            imageUrl = "https://source.unsplash.com/6ADdVn9yK9U"
+            imageUrl = "https://source.unsplash.com/6ADdVn9yK9U",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         ),
         puppy(
             id = 18,
             name = "Puppy18",
-            imageUrl = "https://source.unsplash.com/n4ZnguY391E"
+            imageUrl = "https://source.unsplash.com/n4ZnguY391E",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
+
         ),
         puppy(
             id = 19,
             name = "Puppy19",
-            imageUrl = "https://source.unsplash.com/U8pgck1dgtQ"
+            imageUrl = "https://source.unsplash.com/U8pgck1dgtQ",
+            address="Lorem ipsum dolor sit amet",
+            tagLine="cuite pie"
         )
     )
 
@@ -120,6 +159,12 @@ object PuppyRepo {
     data class puppy(
         val id: Long,
         val name: String,
-        val imageUrl: String
+        val imageUrl: String,
+        val address:String,
+        val tagLine:String
+
     )
+
+    fun getPuppies(): List<puppy> = puppyCollection
+    fun getPuppy(puppyId: Long) = puppyCollection.find { it.id == puppyId }!!
 }
