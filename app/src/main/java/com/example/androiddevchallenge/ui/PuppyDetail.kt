@@ -29,6 +29,7 @@ import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.model.PuppyRepo
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.Neutral8
+import com.example.androiddevchallenge.ui.theme.shapes
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
@@ -51,15 +52,15 @@ fun PuppyDetail(
     puppyId: Long,
     upPress: () -> Unit
 ) {
-    val snack = remember(puppyId) { PuppyRepo.getPuppy(puppyId) }
-    val related = remember(puppyId) { PuppyRepo.getPuppies().subList(0,13)}
+    val puppy = remember(puppyId) { PuppyRepo.getPuppy(puppyId) }
+    val related = remember(puppyId) { PuppyRepo.getPuppies().subList(0, 13) }
 
     Box(Modifier.fillMaxSize()) {
         val scroll = rememberScrollState(0)
         Header()
         Body(related, scroll)
-        Title(snack, scroll.value)
-        Image(snack.imageUrl, scroll.value)
+        Title(puppy, scroll.value)
+        Image(puppy.imageUrl, scroll.value)
         Up(upPress)
     }
 }
@@ -195,17 +196,28 @@ private fun Image(
 ) {
     val collapseRange = with(LocalDensity.current) { (MaxTitleOffset - MinTitleOffset).toPx() }
     val collapseFraction = (scroll / collapseRange).coerceIn(0f, 1f)
-
     CollapsingImageLayout(
         collapseFraction = collapseFraction,
         modifier = HzPadding.then(Modifier.statusBarsPadding())
     ) {
-        CoilImage(
-            data = imageUrl,
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+        Card(
+            // below line is use to add size to our image view and
+            // test tag is use to add tag to our image.
+            modifier = Modifier.fillMaxSize(),
+            // below line is use to
+            // add shape to our image view.
+            shape = CircleShape,
+            // below line is use to add
+            // elevation to our image view.
+            elevation = 12.dp
+        ) {
+            CoilImage(
+                data = imageUrl,
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 
@@ -223,7 +235,7 @@ private fun CollapsingImageLayout(
 
         val imageMaxSize = min(ExpandedImageSize.roundToPx(), constraints.maxWidth)
         val imageMinSize = max(CollapsedImageSize.roundToPx(), constraints.minWidth)
-        val imageWidth = lerp(imageMaxSize,imageMinSize,collapseFraction)
+        val imageWidth = lerp(imageMaxSize, imageMinSize, collapseFraction)
         val imagePlaceable = measurables[0].measure(Constraints.fixed(imageWidth, imageWidth))
 
         val imageY = lerp(MinTitleOffset, MinImageOffset, collapseFraction).roundToPx()
@@ -240,7 +252,6 @@ private fun CollapsingImageLayout(
         }
     }
 }
-
 
 
 @Preview("Snack Detail")
