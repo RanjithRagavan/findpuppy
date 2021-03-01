@@ -30,7 +30,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-
 @Composable
 fun JetsnackApp(backDispatcher: OnBackPressedDispatcher) {
     val navigator: Navigator<Destination> = rememberSaveable(
@@ -89,7 +88,7 @@ fun JetsnackApp(backDispatcher: OnBackPressedDispatcher) {
 // Start building your app here!
 @Composable
 fun Home(onPuppySelected: (Long) -> Unit) {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface(color = Color.White) {
         val columnWidth = mutableStateOf((100..250).random())
 
         Column {
@@ -97,12 +96,14 @@ fun Home(onPuppySelected: (Long) -> Unit) {
                 onClick = {
                     columnWidth.value = (100..250).random()
                 },
-                modifier = Modifier.padding(6.dp)
+                modifier = Modifier.padding(6.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray)
             ) {
                 Text(
-                    text = "Card Resize",
+                    text = "Resize Puppies",
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    style = androidx.compose.ui.text.TextStyle(color = Color.White)
                 )
             }
             LazyColumn {
@@ -112,7 +113,7 @@ fun Home(onPuppySelected: (Long) -> Unit) {
                         modifier = Modifier.padding(4.dp)
                     ) {
                         PuppyRepo.puppyCollection.forEach {
-                            Card(it.id,it.name, it.imageUrl, columnWidth,onPuppySelected)
+                            Card(it.id, it.name, it.imageUrl, columnWidth, onPuppySelected)
                         }
                     }
                 }
@@ -125,7 +126,7 @@ fun Home(onPuppySelected: (Long) -> Unit) {
 @Composable
 fun LightPreview() {
     MyTheme {
-        Home({})
+        Home {}
     }
 }
 
@@ -133,13 +134,13 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        Home({})
+        Home {}
     }
 }
 
 @Composable
 fun Card(
-    id:Long,
+    id: Long,
     name: String,
     imageUrl: String,
     state: MutableState<Int>,
@@ -171,12 +172,4 @@ fun Card(
             )
         }
     }
-}
-
-private fun Color.whiteness(): Float {
-    return (red + green + blue) / 3
-}
-
-private fun Color.rippleColor(): Color {
-    return if (whiteness() >= 0.5) Color.Black else Color.White
 }
